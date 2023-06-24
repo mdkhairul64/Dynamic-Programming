@@ -1,0 +1,84 @@
+****Recursion and Memoization
+
+int recursionMemo(int ind, int w, vector<int> &weight, vector<int> &value, vector<vector<int>>&dp)
+{
+	if (ind == 0)
+	{
+		if (weight[0] <= w)
+		{
+			return value[0];
+		}
+		else {
+			return 0;
+		}
+	}
+	if (dp[ind][w] != -1)
+	{
+		return dp[ind][w];
+	}
+	int notTake = 0 + f(ind - 1, w, weight, value, dp);
+	int take = INT_MIN;
+	if (weight[ind] <= w)
+	{
+		take = value[ind] + f(ind - 1, w - weight[ind], weight, value, dp);
+	}
+	return dp[ind][w] = max(take, notTake);
+}
+
+***Tabulation  from pepcoding i can understand easily
+
+
+int tabulation(int W, vector<int> &weight, vector<int> &value, int n)
+{
+	int i, w;
+	vector<vector<int> > K(n + 1, vector<int>(W + 1));
+
+	// Build table K[][] in bottom up manner
+	for (i = 0; i <= n; i++) {
+		for (w = 0; w <= W; w++) {
+			if (i == 0 || w == 0)
+				K[i][w] = 0;
+			else if (weight[i - 1] <= w)
+				K[i][w] = max(value[i - 1]
+				              + K[i - 1][w - weight[i - 1]],
+				              K[i - 1][w]);
+			else
+				K[i][w] = K[i - 1][w];
+		}
+	}
+	return K[n][W];
+}
+
+***this is from linked-in  source
+
+int knapSap(int wt[], int val[], int n, int w)
+{
+	vector<vector<int>>dp(n + 1, vector<int>(w + 1));
+
+	///**this is for base case
+	for (int i = 0; i < n + 1; i++)
+	{
+		for (int j = 0; j < w + 1; j++)
+		{
+			if (i == 0 || j == 0)
+			{
+				dp[i][j] = 0;
+			}
+		}
+	}
+
+	for (int i = 1; i < n + 1; i++)
+	{
+		for (int j = 1; j < w + 1; j++)
+		{
+			if (wt[i - 1] <= j)
+			{
+				dp[i][j] = max(val[i - 1] + dp[i - 1][j - wt[i - 1]]), dp[i - 1][j];
+			}
+			else {
+				dp[i][j] = dp[i - 1][j];
+			}
+		}
+	}
+	return dp[n][w];
+}
