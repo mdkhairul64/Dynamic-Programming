@@ -1,0 +1,95 @@
+****////*****recursion and memoiation*****////*****
+int recursion(int i,int j,vector<vector<int>>&dp)
+{
+	if(i==0&&j==0)
+	{
+		return 1;
+	}
+	if(i<0||j<0)
+
+	{
+		return 0;
+	}
+	if(dp[i][j]!=-1)
+	{
+		return dp[i][j];
+	}
+
+	int up=recursion(i-1,j,dp);
+	int left=recursion(i,j-1,dp);
+
+	return dp[i][j]=up+left;
+
+
+}
+
+****///here is all of tabulation and space-optimization code
+
+int uniquePaths(int m, int n) {
+
+
+
+	// vector<vector<int>>dp(m,vector<int>(n,-1));
+
+///function call for recursion and memoiation
+
+	// return recursion(m-1,n-1,dp);
+
+
+
+	******//this is tabulation code///********
+
+	// int dp[m][n];
+
+	// for(int i=0;i<m;i++)
+	// {
+	// 	for(int j=0;j<n;j++)
+	// 	{
+	// 		if(i==0&&j==0)dp[i][j]=1;
+			
+	// 		else{
+	// 			int up=0;
+	// 			int left=0;
+	// 			if(i>0)up=dp[i-1][j];
+				
+	// 			if(j>0)left=dp[i][j-1];
+				
+	// 			dp[i][j]=up+left;
+	// 		}
+			
+	// 	}
+	// }
+
+	// return dp[m-1][n-1];
+
+
+
+********	///this is space optimized code********
+
+	vector<int>pre(n,0);
+
+	for(int i=0;i<m;i++)
+	{
+		vector<int>current(n,0);
+		for(int j=0;j<n;j++)
+		{
+			if(i==0&&j==0)current[j]=1;
+			
+			else{
+				int up=0;
+				int left=0;
+				if(i>0)up=pre[j];
+				
+				if(j>0)left=current[j-1];
+				
+				current[j]=up+left;
+			}
+			
+		}
+
+		pre=current;
+	}
+
+	return pre[n-1];
+	
+}
